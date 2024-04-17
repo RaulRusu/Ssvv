@@ -146,7 +146,7 @@ public class BigBangIntegrationTest {
         try {
             service.addStudent(student);
             service.addTema(tema);
-            service.addNota(nota, "Good");
+            service.addNota(nota, "msg");
 
             Student newStudent = this.studentRepo.findOne("1");
             Tema newTema = this.assignmnetRepo.findOne("1");
