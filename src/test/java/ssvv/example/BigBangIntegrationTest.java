@@ -3,10 +3,7 @@ package ssvv.example;
 import org.example.domain.Nota;
 import org.example.domain.Student;
 import org.example.domain.Tema;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.example.repository.NotaXMLRepo;
 import org.example.repository.StudentXMLRepo;
 import org.example.repository.TemaXMLRepo;
@@ -98,13 +95,13 @@ public class BigBangIntegrationTest {
 
     @Test
     public void testAddStudent() {
-        Student student = new Student("1", "A", 1, "a@a");
+        Student student = new Student("test", "test", 1, "test@test.com");
 
         try {
             service.addStudent(student);
 
             // Get the student from the repository
-            Student newStudent = this.studentRepo.findOne("1");
+            Student newStudent = this.studentRepo.findOne("test");
 
             assertEquals(student, newStudent);
         } catch (Exception e) {
@@ -114,50 +111,46 @@ public class BigBangIntegrationTest {
 
     @Test
     public void testAddAssignment() {
-        Tema tema = new Tema("1", "Test", 7, 1);
+        Tema tema = new Tema("test", "testDeesc", 2, 1);
 
         try {
             service.addTema(tema);
 
             // Get the assignment from the repo
-            Tema temaRepo = this.assignmnetRepo.findOne("1");
+            Tema temaFromRepo = this.assignmnetRepo.findOne("test");
 
-            assertEquals(tema, temaRepo);
-        } catch (Exception e) {
+            assertEquals(tema, temaFromRepo);
+        } catch (Exception ex) {
             fail();
         }
     }
 
     @Test
     public void testAddGrade() {
-        Nota nota = new Nota("1", "1", "1", 1, LocalDate.now());
+        Nota nota = new Nota("test", "1", "1", 1, LocalDate.now());
 
         try {
-            service.addNota(nota, "Good");
-
-            // Get the grade from the repo
-            Nota notaRepo = this.gradesRepo.findOne("1");
-
-            assertEquals(nota, notaRepo);
+            service.addNota(nota, "test");
+            fail();
         } catch (Exception e) {
-            fail(e.getMessage());
+            assertEquals(e.getMessage(), "Studentul nu exista!");
         }
     }
 
     @Test
     public void testBigBang() {
-        Student student = new Student("2", "B", 2, "b@b");
-        Tema tema = new Tema("2", "Test", 7, 1);
-        Nota nota = new Nota("2", "2", "2", 1, LocalDate.now());
+        Student student = new Student("1", "test", 1, "test@test.com");
+        Tema tema = new Tema("1", "test", 8, 1);
+        Nota nota = new Nota("1", "1", "1", 10, LocalDate.now());
 
         try {
             service.addStudent(student);
             service.addTema(tema);
             service.addNota(nota, "Good");
 
-            Student newStudent = this.studentRepo.findOne("2");
-            Tema newTema = this.assignmnetRepo.findOne("2");
-            Nota newNota = this.gradesRepo.findOne("2");
+            Student newStudent = this.studentRepo.findOne("1");
+            Tema newTema = this.assignmnetRepo.findOne("1");
+            Nota newNota = this.gradesRepo.findOne("1");
 
             assertEquals(student, newStudent);
             assertEquals(tema, newTema);
