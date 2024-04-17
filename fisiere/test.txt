@@ -4,3 +4,9 @@ Nota: 10.0
 Predata in saptamana: 6
 Deadline: 8
 Feedback: msg
+
+Tema: 1
+Nota: 10.0
+Predata in saptamana: 6
+Deadline: 8
+Feedback: msg

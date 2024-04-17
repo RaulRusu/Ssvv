@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class BigBangIntegrationTest {
+public class IncrementalIntegrationTest {
 
     private TemaXMLRepo assignmentRepo;
     private StudentXMLRepo studentRepo;
@@ -100,7 +100,6 @@ public class BigBangIntegrationTest {
         try {
             service.addStudent(student);
 
-            // Get the student from the repository
             Student newStudent = this.studentRepo.findOne("test");
 
             assertEquals(student, newStudent);
@@ -110,46 +109,37 @@ public class BigBangIntegrationTest {
     }
 
     @Test
-    public void testAddAssignment() {
-        Tema tema = new Tema("test", "testDeesc", 2, 1);
+    public void testAddStudentAddAssignment() {
+        Student student = new Student("1", "a", 1, "test@test.com");
+        Tema tema = new Tema("1", "testDeesc", 2, 1);
 
         try {
+            service.addStudent(student);
             service.addTema(tema);
 
-            // Get the assignment from the repo
-            Tema temaFromRepo = this.assignmentRepo.findOne("test");
+            Student newStudent = this.studentRepo.findOne("1");
+            Tema temaFromRepo = this.assignmentRepo.findOne("1");
 
             assertEquals(tema, temaFromRepo);
+            assertEquals(student, newStudent);
         } catch (Exception ex) {
             fail();
         }
     }
 
     @Test
-    public void testAddGrade() {
-        Nota nota = new Nota("test", "1", "1", 1, LocalDate.now());
-
-        try {
-            service.addNota(nota, "test");
-            fail();
-        } catch (Exception e) {
-            assertEquals(e.getMessage(), "Studentul nu exista!");
-        }
-    }
-
-    @Test
-    public void testBigBang() {
-        Student student = new Student("1", "test", 1, "test@test.com");
-        Tema tema = new Tema("1", "test", 8, 1);
-        Nota nota = new Nota("1", "1", "1", 10, LocalDate.now());
+    public void testIncrementalFinal() {
+        Student student = new Student("2", "a", 1, "test@test.com");
+        Tema tema = new Tema("2", "testdesc", 8, 1);
+        Nota nota = new Nota("1", "2", "2", 10, LocalDate.now());
 
         try {
             service.addStudent(student);
             service.addTema(tema);
             service.addNota(nota, "msg");
 
-            Student newStudent = this.studentRepo.findOne("1");
-            Tema newTema = this.assignmentRepo.findOne("1");
+            Student newStudent = this.studentRepo.findOne("2");
+            Tema newTema = this.assignmentRepo.findOne("2");
             Nota newNota = this.gradesRepo.findOne("1");
 
             assertEquals(student, newStudent);
@@ -157,6 +147,26 @@ public class BigBangIntegrationTest {
             assertEquals(nota, newNota);
         } catch (Exception e) {
             fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testIncrementalFinalError() {
+        Student student = new Student("3", "a", 1, "test@test.com");
+        Tema tema = new Tema("3", "testdesc", 4, 1);
+        Nota nota = new Nota("2", "3", "3", 10, LocalDate.now());
+
+        try {
+            service.addStudent(student);
+            service.addTema(tema);
+            service.addNota(nota, "msg");
+
+            Student newStudent = this.studentRepo.findOne("2");
+            Tema newTema = this.assignmentRepo.findOne("2");
+            Nota newNota = this.gradesRepo.findOne("1");
+            fail();
+        } catch (Exception e) {
+            assertEquals(e.getMessage(), "Studentul nu mai poate preda aceasta tema!");
         }
     }
 }
