@@ -41,3 +41,4 @@ public class NotaValidator implements Validator<Nota> {
         }
     }
 }
+

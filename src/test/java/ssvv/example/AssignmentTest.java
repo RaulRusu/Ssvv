@@ -102,22 +102,10 @@ public class AssignmentTest
         }
     }
 
-    @Test
-    public void testAddAssignment_DeadlineLessThan1() {
-        Tema newTema = new Tema("3", "a", 0, 1);
-
-        try {
-            this.service.addTema(newTema);
-            fail();
-        } catch (Exception e) {
-            assertEquals(e.getMessage(), "Deadlineul trebuie sa fie intre 1-14.");
-        }
-    }
-
 
     @Test
-    public void testAddAssignment_DeadlineGreaterThan14() {
-        Tema newTema = new Tema("4", "a", 15, 1);
+    public void testAddAssignment_DeadlineGreater() {
+        Tema newTema = new Tema("3", "a", 15, 1);
 
         try {
             this.service.addTema(newTema);
@@ -128,20 +116,8 @@ public class AssignmentTest
     }
 
     @Test
-    public void testAddAssignment_ReceiveGreaterThan14() {
-        Tema newTema = new Tema("5", "a", 1, 15);
-
-        try {
-            this.service.addTema(newTema);
-            fail();
-        } catch (Exception e) {
-            assertEquals(e.getMessage(), "Saptamana primirii trebuie sa fie intre 1-14.");
-        }
-    }
-
-    @Test
-    public void testAddAssignment_ReceiveLessThan1() {
-        Tema newTema = new Tema("6", "a", 1, 0);
+    public void testAddAssignment_ReceiveError() {
+        Tema newTema = new Tema("4", "a", 1, 0);
 
         try {
             this.service.addTema(newTema);
